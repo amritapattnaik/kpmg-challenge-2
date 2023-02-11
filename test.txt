@@ -1,3 +1,8 @@
+Challenge #2
+We need to write code that will query the meta data of an instance within GCP and provide a json formatted output. 
+
+
+
 
 curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=json" -H "Metadata-Flavor: Google"
 
