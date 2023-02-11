@@ -1,0 +1,26 @@
+
+curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=json" -H "Metadata-Flavor: Google"
+
+from googleapiclient import discovery
+from oauth2client.client import GoogleCredentials
+from pprint import pprint
+jsonPath = "myJSON.json"
+
+credentials = GoogleCredentials.from_stream(jsonPath)
+# Define gcp service
+service = discovery.build('compute', 'v1', credentials=credentials)
+
+#Request Body
+bodyData = {"fingerprint": "***","items": [{"key": "startup-script","value": "#! /bin/bash\n\nservice start sshguard"}]}
+#setMeta Data Request
+instance = service.instances().setMetadata(project="<PROJECT>", zone="europe-west1-b", instance="<ID>", body=bodyData)
+#Execute request
+response = instance.execute()
+# Get instacne details
+instanceget = service.instances().get(project="<PROJECT>", zone="europe-west1-b", instance="<ID>").execute()
+
+#Print response + New Metadata
+pprint(response)
+print("'New Metadata:", instanceget['metadata'])
+
+
